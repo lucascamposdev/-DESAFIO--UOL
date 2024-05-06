@@ -17,6 +17,7 @@ public class UserService {
     public UserEntity register(UserRequestDto dto){
         var newUser = new UserEntity(dto);
 
+
         return this.repository.save(newUser);
     }
 

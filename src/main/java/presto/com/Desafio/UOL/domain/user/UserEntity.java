@@ -1,10 +1,7 @@
 package presto.com.Desafio.UOL.domain.user;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,14 +12,17 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
-
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
+    @Column(unique = true)
     private String email;
+
     private String phone;
     private String codename;
     private UserGroups usergroup;

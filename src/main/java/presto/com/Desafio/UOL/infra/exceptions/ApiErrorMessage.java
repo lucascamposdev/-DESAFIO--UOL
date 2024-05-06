@@ -1,4 +1,4 @@
-package presto.com.Desafio.UOL.infra;
+package presto.com.Desafio.UOL.infra.exceptions;
 
 import lombok.Getter;
 import lombok.Setter;

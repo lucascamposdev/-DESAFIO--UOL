@@ -1,15 +1,14 @@
-package presto.com.Desafio.UOL.infra;
+package presto.com.Desafio.UOL.infra.exceptions;
 
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import presto.com.Desafio.UOL.infra.exceptions.ApiErrorMessage;
 
 
 import java.util.List;
@@ -19,8 +18,16 @@ import java.util.stream.Collectors;
 public class RestExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiErrorMessage> handle404(IllegalArgumentException ex){
+    public ResponseEntity<ApiErrorMessage> handleIllegalArgumentException(IllegalArgumentException ex){
         ApiErrorMessage apiErrorMessage = new ApiErrorMessage(ex.getMessage());
+        return ResponseEntity.badRequest().body(apiErrorMessage);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiErrorMessage> handleDataIntegrityViolationException(DataIntegrityViolationException ex){
+        String message = "Email já está em uso";
+
+        ApiErrorMessage apiErrorMessage = new ApiErrorMessage(message);
         return ResponseEntity.badRequest().body(apiErrorMessage);
     }
 
