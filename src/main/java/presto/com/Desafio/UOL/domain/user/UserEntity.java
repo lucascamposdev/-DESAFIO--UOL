@@ -2,16 +2,14 @@ package presto.com.Desafio.UOL.domain.user;
 
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity {
 
     @Id
@@ -31,7 +29,6 @@ public class UserEntity {
         this.name = dto.getName();
         this.email = dto.getEmail();
         this.phone = dto.getPhone();
-        this.codename = "Lucas";
-        this.usergroup = UserGroups.LIGADAJUSTICA;
+        this.usergroup = dto.getUsergroup();
     }
 }

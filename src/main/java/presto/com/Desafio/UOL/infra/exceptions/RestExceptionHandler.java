@@ -23,6 +23,12 @@ public class RestExceptionHandler {
         return ResponseEntity.badRequest().body(apiErrorMessage);
     }
 
+    @ExceptionHandler(UnavailableCodenamesException.class)
+    public ResponseEntity<ApiErrorMessage> handleUnavailableCodenamesException(UnavailableCodenamesException ex){
+        ApiErrorMessage apiErrorMessage = new ApiErrorMessage(ex.getMessage());
+        return ResponseEntity.badRequest().body(apiErrorMessage);
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiErrorMessage> handleDataIntegrityViolationException(DataIntegrityViolationException ex){
         String message = "Email já está em uso";

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import presto.com.Desafio.UOL.domain.user.UserEntity;
 import presto.com.Desafio.UOL.domain.user.UserRequestDto;
+import presto.com.Desafio.UOL.infra.CodenameHandler;
 import presto.com.Desafio.UOL.repository.UserRepository;
 
 @Service
@@ -14,10 +15,13 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private CodenameHandler codenameHandler;
+
     public UserEntity register(UserRequestDto dto){
         var newUser = new UserEntity(dto);
-
-
+        String codename = codenameHandler.getCodename(dto.getUsergroup());
+        newUser.setCodename(codename);
         return this.repository.save(newUser);
     }
 
