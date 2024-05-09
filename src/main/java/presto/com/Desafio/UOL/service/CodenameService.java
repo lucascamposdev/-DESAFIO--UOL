@@ -43,7 +43,8 @@ public class CodenameService {
     @PostConstruct
     public void initializeJson(){
         try{
-            String res = restTemplate.getForObject(env.getProperty("vingadores.url"), String.class);
+            String url = env.getProperty("vingadores.url");
+            String res = restTemplate.getForObject(url, String.class);
 
             JsonNode node = objectMapper
                     .readTree(res)
@@ -65,10 +66,10 @@ public class CodenameService {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(env.getProperty("ligadajustica.url"));
 
-            NodeList codinamesList = document.getElementsByTagName("codinome");
+            NodeList codenamesList = document.getElementsByTagName("codinome");
 
-            for (int i = 0; i < codinamesList.getLength(); i++) {
-                Element codinameElement = (Element) codinamesList.item(i);
+            for (int i = 0; i < codenamesList.getLength(); i++) {
+                Element codinameElement = (Element) codenamesList.item(i);
                 String codiname = codinameElement.getTextContent();
                 this.ligadajustica.add(codiname);
             }
