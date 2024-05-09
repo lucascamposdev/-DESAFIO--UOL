@@ -18,6 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -25,6 +28,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -43,7 +47,7 @@ class CodenameServiceTest {
     ObjectMapper objectMapper;
 
     @Mock
-    private DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    private DocumentBuilder builder;
 
     @Mock
     Environment env;
@@ -59,7 +63,7 @@ class CodenameServiceTest {
     //      Assert
             String jsonResponse = "{\"vingadores\": [{\"codinome\": \"Hulk\"}, {\"codinome\": \"Thor\"}]}";
 
-            when(restTemplate.getForObject("dummy.url", String.class))
+            when(restTemplate.getForObject(env.getProperty("vingadores.url"), String.class))
                     .thenReturn(jsonResponse);
 
             JsonNode node = new ObjectMapper().readTree(jsonResponse);
@@ -85,6 +89,49 @@ class CodenameServiceTest {
 
             // Act & Assert
             assertThrows(Exception.class, () -> new ObjectMapper().readTree(wrongString));
+        }
+    }
+
+    @Nested
+    class initializeXML{
+        @Test
+        void shouldFillLigaDaJusticaList() throws Exception{
+//          Arrange
+            String xmlContent = "<root><codinome>Flash</codinome><codinome>Batman</codinome></root>";
+
+            InputSource inputSource = new InputSource(new StringReader(xmlContent));
+
+            Document document = DocumentBuilderFactory
+                    .newInstance()
+                    .newDocumentBuilder()
+                    .parse(inputSource);
+
+            when(builder.parse(env.getProperty("ligadajustica.url"))).thenReturn(document);
+
+//          Act
+            codenameService.initializeXML();
+
+            List<String> list = codenameService.getLigadajustica();
+
+//          Assert
+            assertEquals(2, list.size());
+            assertEquals("Flash", list.get(0));
+            assertEquals("Batman", list.get(1));
+        }
+
+        @Test
+        void shouldThrowExceptionWhenUrlReturnIsNotXML() throws Exception{
+//          Arrange
+            //      Assert
+            String xmlContent = "<>String<>";
+
+            InputSource inputSource = new InputSource(new StringReader(xmlContent));
+            DocumentBuilder newBuild = DocumentBuilderFactory
+                    .newInstance()
+                    .newDocumentBuilder();
+
+            // Act & Assert
+            assertThrows(Exception.class, () -> newBuild.parse(inputSource));
         }
     }
 }
