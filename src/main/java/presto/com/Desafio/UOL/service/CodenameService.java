@@ -3,6 +3,7 @@ package presto.com.Desafio.UOL.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -13,15 +14,19 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("LombokGetterMayBeUsed")
 @Service
+@Getter
 public class CodenameService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private DocumentBuilder builder;
 
     @Autowired
     private Environment env;
@@ -29,8 +34,12 @@ public class CodenameService {
     @Autowired
     private ObjectMapper objectMapper;
 
+
     private List<String> vingadores = new ArrayList<>();
     private List<String> ligadajustica = new ArrayList<>();
+
+    public CodenameService() throws ParserConfigurationException {
+    }
 
     public List<String> getVingadores() {
         return vingadores;
@@ -62,8 +71,6 @@ public class CodenameService {
     @PostConstruct
     public void initializeXML(){
         try{
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(env.getProperty("ligadajustica.url"));
 
             NodeList codenamesList = document.getElementsByTagName("codinome");
