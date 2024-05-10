@@ -39,6 +39,25 @@ mvn spring-boot:run
 
 ## API Endpoints
 
+- Cadastrar Usuário
+```
+$ POST api/users
+
+{
+  "name": "User",
+  "email": user@email.com,
+  "phone": "00122222222",
+  "usergroup": "VINGADORES",
+}
+
+```
+
+- Listar Usuários
+```
+$ GET api/users
+```
+
+
 
 # Autor
 
