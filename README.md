@@ -25,8 +25,6 @@ A minha solução foi baseada em uma única solicitação para cada url assim qu
 - Maven
 - JUnit / Mockito
 
-A API poderá ser acessada em http://localhost:8080
-
 # Como executar o projeto
 
 ```bash
@@ -38,10 +36,13 @@ mvn spring-boot:run
 ```
 
 ## API Endpoints
+```
+A API poderá ser acessada em http://localhost:8080
+```
 
 - Cadastrar Usuário
 ```
-$ POST api/users
+[POST] api/users
 
 {
   "name": "User",
@@ -54,7 +55,7 @@ $ POST api/users
 
 - Listar Usuários
 ```
-$ GET api/users
+[GET] api/users
 ```
 
 
